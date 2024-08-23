@@ -4,7 +4,13 @@
   margin-inline: auto;
   border-radius: 10px;
   display: grid;
-  background-color: rgb(171, 190, 220);
+  background-color: #f2f2f2;
+  position: absolute;
+  z-index: 1000;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  top: 55px;
+  margin-right: -63px;
+  right: 0;
 }
 .underline {
   background-color: #979797;

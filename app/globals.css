@@ -48,6 +48,7 @@ a {
 .wrapper {
   max-width: 327px;
   margin-inline: auto;
+  position: relative;
 }
 .nav-div {
   display: grid;
@@ -127,6 +128,10 @@ ul li .links {
   justify-content: space-between;
   width: 68px;
   place-items: center;
+}
+.cart-icon-container {
+  display: grid;
+  position: relative;
 }
 .nav-left {
   display: grid;

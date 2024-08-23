@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Product1 from "../../public/images/image-product-1.jpg";
 import Image from "next/image";
 import Previous from "../../public/images/icon-previous.svg";
@@ -10,15 +10,39 @@ import Minus from "../../public/images/icon-minus.svg";
 import Cart from "../../public/images/icon-cart.svg";
 import "../../styles/product.css";
 import { useDispatch, useSelector } from "react-redux";
+import { productActions } from "@/features/productSlice";
+import { cartActions } from "@/features/cartSlice";
 
-const Product = () => {
+const Product = ({ productId = 1 }) => {
   const dispatch = useDispatch();
   const { selectedProductId, selectedQuantity, products } = useSelector(
     (state) => state.product
   );
+  const increment = () => {
+    dispatch(productActions.setSelectedQuantity(selectedQuantity + 1));
+  };
+  const decrement = () => {
+    dispatch(
+      productActions.setSelectedQuantity(Math.max(selectedQuantity - 1, 1))
+    );
+  };
+  useEffect(() => {
+    dispatch(productActions.applyDiscount({ productId, discount: 50 }));
+  }, [dispatch, productId]);
 
-  const product =
-    products.find((p) => p.id === selectedProductId) || products[0];
+  const product = products.find((p) => p.id === productId);
+
+  const handleAddToCart = () => {
+    if (product) {
+      dispatch(
+        productActions.addToCart({
+          productId: product.id,
+          quantity: selectedQuantity,
+        })
+      );
+      dispatch(cartActions.openCartModal());
+    }
+  };
 
   if (!product) {
     return <div>No product found</div>;
@@ -44,7 +68,7 @@ const Product = () => {
         </div>
 
         <div className="product-price">
-          <h2>${}</h2>
+          <h2>${product.finalPrice?.toFixed(2)}</h2>
           <div className="price-percentage">
             <h1>{product.discount}%</h1>
           </div>
@@ -52,12 +76,12 @@ const Product = () => {
         </div>
 
         <div className="product-amount">
-          <Image src={Minus} alt="minus" />
-          <span>0</span>
-          <Image src={Plus} alt="plus" />
+          <Image src={Minus} alt="minus" onClick={decrement} />
+          <span>{selectedQuantity}</span>
+          <Image src={Plus} alt="plus" onClick={increment} />
         </div>
 
-        <button className="btn">
+        <button className="btn" onClick={handleAddToCart}>
           <Image className="cart-add" src={Cart} alt="cart" />
           Add to cart
         </button>

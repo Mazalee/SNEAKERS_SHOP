@@ -15,6 +15,9 @@ const initialState = {
       images: [],
     },
   ],
+  cartItems: [],
+  totalQuantity: 0,
+  totalAmount: 0,
 };
 
 export const productSlice = createSlice({
@@ -43,6 +46,32 @@ export const productSlice = createSlice({
         product.discount = discount;
         product.finalPrice = product.price * (1 - discount / 100);
       }
+    },
+    addToCart(state, action) {
+      const { productId, quantity } = action.payload;
+      const product = state.products.find(
+        (product) => product.id === productId
+      );
+
+      if (!product) return;
+
+      const existingItem = state.cartItems.find(
+        (item) => item.productId === productId
+      );
+
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        state.cartItems.push({
+          productId,
+          name: product.name,
+          finalPrice: product.finalPrice,
+          quantity,
+        });
+      }
+
+      state.totalQuantity += quantity;
+      state.totalAmount += product.finalPrice * quantity;
     },
   },
 });
