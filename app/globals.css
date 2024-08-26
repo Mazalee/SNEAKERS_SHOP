@@ -54,6 +54,7 @@ a {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: space-between;
+  margin-top: 20px;
 }
 .overlay {
   position: fixed;
@@ -66,6 +67,9 @@ a {
   z-index: 99;
 }
 .links-container {
+  display: none;
+}
+.desktop-underline {
   display: none;
 }
 .sidebar {
@@ -89,7 +93,7 @@ a {
 .sidebar-visible {
   background-color: #ffffff;
   width: 250px;
-  height: 900px;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
@@ -172,4 +176,41 @@ ul li .links {
 }
 .next {
   right: 16px;
+}
+
+/*dESKTOP*/
+@media only screen and (min-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+  .mobile-menu {
+    display: none;
+  }
+  .wrapper {
+    max-width: 1110px;
+    margin-inline: auto;
+  }
+  .nav-left {
+    gap: 60px;
+  }
+  .links-container {
+    display: block;
+  }
+  .links-container ul {
+    display: flex;
+    gap: 30px;
+  }
+  .links {
+    color: #69707d;
+    font-size: 15px;
+    font-weight: regular;
+  }
+  .desktop-underline {
+    display: block;
+    background-color: #979797;
+    width: 1110px;
+    height: 0.1px;
+    margin-top: 30px;
+    /* position: fixed; */
+  }
 }

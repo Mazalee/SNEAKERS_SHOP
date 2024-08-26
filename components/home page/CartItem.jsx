@@ -6,27 +6,58 @@ import { useDispatch, useSelector } from "react-redux";
 
 const CartItem = () => {
   const dispatch = useDispatch();
-  const { CartItems, totalAmount } = useSelector((state) => state.product);
-  // console.log(CartItems.length);
+  const { cartItems, totalAmount, totalQuantity } = useSelector(
+    (state) => state.product
+  );
+  const { isCartModalOpen } = useSelector((state) => state.cart);
+  const handleClick = (e) => {
+    e.stopPropagation();
+  };
 
   return (
-    <div className="cart-item">
-      <h1>Cart</h1>
-      <div className="underline"></div>
-      {/* {cartI} */}
-      <div className="cart-item-details">
-        <div className="cart-image">
-          <Image src={Product1} alt="product1" className="small-product1" />
-        </div>
-        <div className="cart-inner">
-          <h3>fall limited edition sneakers</h3>
-          <h2>
-            $125.00 x 3 <span className="price-span">$375.00</span>
-          </h2>
-        </div>
+    <>
+      {isCartModalOpen && <div className="cart-overlay"></div>}
+      <div
+        className={`cart-item ${isCartModalOpen ? "visible" : ""}`}
+        onClick={handleClick}
+      >
+        <h1>Cart</h1>
+        <div className="underline"></div>
+        {cartItems.length > 0 ? (
+          <div className="cart-content">
+            {cartItems.map((item) => (
+              <div key={item.productId} className="cart-item-details">
+                <div className="cart-content-inner">
+                  <div className="cart-image">
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      width={50}
+                      height={50}
+                      style={{ borderRadius: "5px" }}
+                    />
+                  </div>
+                  <div className="cart-inner">
+                    <h3>{item.name}</h3>
+                    <h2>
+                      ${item.finalPrice.toFixed(2)} x {item.quantity}{" "}
+                      <span className="price-span">
+                        ${(item.finalPrice * item.quantity).toFixed(2)}
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+                <button className="btn-checkout">Checkout</button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="empty-cart">
+            <h2>Your cart is empty.</h2>
+          </div>
+        )}
       </div>
-      <button className="btn-checkout">Checkout</button>
-    </div>
+    </>
   );
 };
 

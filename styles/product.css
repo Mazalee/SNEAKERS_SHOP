@@ -1,6 +1,9 @@
 .product {
   font-family: Kumbh Sans;
 }
+.other-images {
+  display: none;
+}
 .product-details h3 {
   color: #69707d;
   text-transform: uppercase;
@@ -26,12 +29,18 @@
 }
 .product-price {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto;
   justify-content: space-between;
   margin-top: 10px;
   place-items: center;
   width: 326px;
   height: 34px;
+}
+.product-inner-price {
+  display: grid;
+  grid-template-columns: auto auto;
+  place-items: center;
+  gap: 80px;
 }
 .product-price h2 {
   font-size: 28px;
@@ -96,4 +105,71 @@
   width: 17.46px;
   height: 16px;
   color: #d9e1f1;
+}
+
+/*DESKTOP*/
+@media only screen and (min-width: 1024px) {
+  .product {
+    max-width: 1015px;
+    margin-inline: auto;
+    display: grid;
+    gap: 125px;
+    grid-template-columns: auto auto;
+    height: 565px;
+    margin-top: 40px;
+    margin-bottom: 60px;
+  }
+  .control {
+    display: none;
+  }
+  .product1 {
+    width: 445px;
+    height: 445px;
+    border-radius: 15px;
+  }
+  .other-images {
+    display: block;
+    margin-top: 32px;
+  }
+  .other-images-inner {
+    display: grid;
+    gap: 31px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .smaller-products {
+    width: 88px;
+    height: 88px;
+    border-radius: 10px;
+  }
+  .product-price {
+    display: grid;
+    grid-template-columns: auto;
+    margin-top: 20px;
+  }
+  .product-price h3 {
+    margin-left: -115px;
+  }
+  .add-product {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 32px;
+    gap: 16px;
+  }
+  .btn {
+    margin-top: 30px;
+    padding: 18px 76px;
+  }
+  .product-amount {
+    width: 157px;
+  }
+  .product-details {
+    margin-top: 70px;
+  }
+  .product-details h2 {
+    font-size: 44px;
+    margin-top: 15px;
+  }
+  .product-details p {
+    margin-top: 20px;
+  }
 }

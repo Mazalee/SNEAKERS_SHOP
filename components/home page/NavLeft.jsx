@@ -17,6 +17,7 @@ const links = [
 
 const NavLeft = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };

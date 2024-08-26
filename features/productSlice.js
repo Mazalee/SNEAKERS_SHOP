@@ -1,8 +1,16 @@
+"use client";
+
 import { createSlice } from "@reduxjs/toolkit";
+import productImages1 from "./../public/images/image-product-1.jpg";
+import productImages2 from "./../public/images/image-product-2.jpg";
+import productImages3 from "./../public/images/image-product-3.jpg";
+import productImages4 from "./../public/images/image-product-4.jpg";
 
 const initialState = {
   selectedProductId: null,
   selectedQuantity: 1,
+  selectedImageUrl: null,
+  isImageModalOpen: false,
   products: [
     {
       id: 1,
@@ -12,7 +20,13 @@ const initialState = {
       price: 250,
       discount: 50,
       finalPrice: null,
-      images: [],
+      images: [productImages1, productImages2, productImages3, productImages4],
+      thumbnailImages: [
+        "/images/image-product-1-thumbnail.jpg",
+        "/images/image-product-2-thumbnail.jpg",
+        "/images/image-product-3-thumbnail.jpg",
+        "/images/image-product-4-thumbnail.jpg",
+      ],
     },
   ],
   cartItems: [],
@@ -67,11 +81,18 @@ export const productSlice = createSlice({
           name: product.name,
           finalPrice: product.finalPrice,
           quantity,
+          imageUrl: product.imageUrl,
         });
       }
 
       state.totalQuantity += quantity;
       state.totalAmount += product.finalPrice * quantity;
+    },
+    setSelectedImageUrl(state, action) {
+      state.selectedImageUrl = action.payload;
+    },
+    setIsImageModalOpen(state, action) {
+      state.isImageModalOpen = action.payload;
     },
   },
 });

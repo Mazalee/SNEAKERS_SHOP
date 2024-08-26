@@ -14,6 +14,9 @@ export const cartSlice = createSlice({
     closeCartModal(state) {
       state.isCartModalOpen = false;
     },
+    toggleCartModal(state) {
+      state.isCartModalOpen = !state.isCartModalOpen;
+    },
   },
 });
 
