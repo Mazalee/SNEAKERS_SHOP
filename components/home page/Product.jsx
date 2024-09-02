@@ -1,29 +1,33 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-// import Product1 from "../../public/images/image-product-1.jpg";
-// import product1 from "../../public/images/image-product-1-thumbnail.jpg";
-// import product2 from "../../public/images/image-product-2-thumbnail.jpg";
-// import product3 from "../../public/images/image-product-3-thumbnail.jpg";
-// import product4 from "../../public/images/image-product-4-thumbnail.jpg";
 import Image from "next/image";
 import Previous from "../../public/images/icon-previous.svg";
 import Next from "../../public/images/icon-next.svg";
 import Plus from "../../public/images/icon-plus.svg";
 import Minus from "../../public/images/icon-minus.svg";
 import Cart from "../../public/images/icon-cart.svg";
-import Close from "../../public/images/icon-close.svg";
 import "../../styles/product.css";
 import { useDispatch, useSelector } from "react-redux";
 import { productActions } from "@/features/productSlice";
-import { cartActions } from "@/features/cartSlice";
-import { images } from "@/features/images";
 import ImageModal from "./ImageModal";
 
 const Product = ({ productId = 1 }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch();
   const { selectedImageUrl, selectedQuantity, products, isImageModalOpen } =
     useSelector((state) => state.product);
+
+  const product = products.find((p) => p.id === productId);
+
+  useEffect(() => {
+    dispatch(productActions.setSelectedProductId(productId));
+    dispatch(productActions.applyDiscount({ productId, discount: 50 }));
+    if (!selectedImageUrl && product) {
+      dispatch(productActions.setSelectedImageUrl(product.images[0]));
+    }
+  }, [dispatch, productId, selectedImageUrl, product]);
+
   const increment = () => {
     dispatch(productActions.setSelectedQuantity(selectedQuantity + 1));
   };
@@ -32,11 +36,6 @@ const Product = ({ productId = 1 }) => {
       productActions.setSelectedQuantity(Math.max(selectedQuantity - 1, 1))
     );
   };
-  useEffect(() => {
-    dispatch(productActions.applyDiscount({ productId, discount: 50 }));
-  }, [dispatch, productId]);
-
-  const product = products.find((p) => p.id === productId);
 
   const handleAddToCart = () => {
     if (product) {
@@ -54,8 +53,12 @@ const Product = ({ productId = 1 }) => {
     dispatch(productActions.setIsImageModalOpen(true));
   };
 
-  const handleCloseModal = () => {
-    dispatch(productActions.setIsImageModalOpen(false));
+  const handleNextImage = () => {
+    dispatch(productActions.nextImage());
+  };
+
+  const handlePreviousImage = () => {
+    dispatch(productActions.previousImage());
   };
 
   if (!product) {
@@ -66,17 +69,27 @@ const Product = ({ productId = 1 }) => {
     <div className="product">
       <div className="product-image">
         <Image
-          src={product.images[0]}
+          src={selectedImageUrl || product.images[0]}
           alt="productImage1"
           className="product1"
           width={445}
           height={445}
         />
         <div className="control previous">
-          <Image src={Previous} alt="previous" className="previous" />
+          <Image
+            src={Previous}
+            alt="previous"
+            className="previous"
+            onClick={handlePreviousImage}
+          />
         </div>
         <div className="control next">
-          <Image src={Next} alt="next" className="next" />
+          <Image
+            src={Next}
+            alt="next"
+            className="next"
+            onClick={handleNextImage}
+          />
         </div>
         <div className="other-images">
           <div className="other-images-inner">
@@ -91,50 +104,11 @@ const Product = ({ productId = 1 }) => {
                 onClick={() => handleImageClick(product.images[index])}
               />
             ))}
-            {/* <Image
-              src={product1}
-              alt="product1"
-              className="smaller-products"
-              onClick={() => handleImageClick(product1)}
-            />
-            <Image
-              src={product2}
-              alt="product2"
-              className="smaller-products"
-              onClick={() => handleImageClick(product2)}
-            />
-            <Image
-              src={product3}
-              alt="product3"
-              className="smaller-products"
-              onClick={() => handleImageClick(product3)}
-            />
-            <Image
-              src={product4}
-              alt="product4"
-              className="smaller-products"
-              onClick={() => handleImageClick(product4)}
-            /> */}
           </div>
         </div>
       </div>
 
-      {isImageModalOpen && (
-        <ImageModal />
-        // <div className="image-modal">
-        //   <Image
-        //     src={Close}
-        //     className="close-modal"
-        //     onClick={handleCloseModal}
-        //   />
-        //   <Image src={selectedImageUrl} alt="Selected Product" />
-        //   {/* <div className="smaller-products-modal">
-        //     {images.map((image) => (
-        //       <Image src={image.name} alt="product" width={50} height={50} />
-        //     ))}
-        //   </div> */}
-        // </div>
-      )}
+      {isImageModalOpen && <ImageModal />}
 
       <div className="wrapper">
         <div className="product-details">

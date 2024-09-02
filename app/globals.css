@@ -150,6 +150,21 @@ ul li .links {
   width: 21.82px;
   height: 20px;
 }
+.cart-item-count {
+  position: absolute;
+  top: -6px;
+  right: -7px;
+  background-color: #ff7e1b;
+  color: #ffffff;
+  border-radius: 40%;
+  font-size: 10px;
+  font-weight: bold;
+  width: 19px;
+  height: 13px;
+  display: grid;
+  place-items: center;
+  place-content: center;
+}
 .product-image {
   margin-top: 20px;
   height: 300px;

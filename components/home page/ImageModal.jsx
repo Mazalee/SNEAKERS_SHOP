@@ -1,21 +1,39 @@
-import { images } from "@/features/images";
 import { productActions } from "@/features/productSlice";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../../styles/ImageModal.css";
 import Close from "../../public/images/icon-close.svg";
 import Previous from "../../public/images/icon-previous.svg";
 import Next from "../../public/images/icon-next.svg";
 import Image from "next/image";
-import product1 from "../../public/images/image-product-1-thumbnail.jpg";
-import product2 from "../../public/images/image-product-2-thumbnail.jpg";
-import product3 from "../../public/images/image-product-3-thumbnail.jpg";
-import product4 from "../../public/images/image-product-4-thumbnail.jpg";
 
-const ImageModal = () => {
+const ImageModal = ({ productId = 1 }) => {
   const dispatch = useDispatch();
-  const { selectedImageUrl, selectedQuantity, products, isImageModalOpen } =
-    useSelector((state) => state.product);
+  const { selectedImageUrl, products } = useSelector((state) => state.product);
+
+  const product = products.find((p) => p.id === productId);
+
+  const imageModalRef = useRef();
+
+  const handleClickOutside = (e) => {
+    console.log("handleClickOutside triggered");
+    if (imageModalRef.current && !imageModalRef.current.contains(e.target)) {
+      dispatch(productActions.setIsImageModalOpen(false));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!selectedImageUrl && product) {
+      dispatch(productActions.setSelectedImageUrl(product.images[0]));
+    }
+  }, [dispatch, selectedImageUrl, product]);
 
   const handleImageClick = (imageUrl) => {
     dispatch(productActions.setSelectedImageUrl(imageUrl));
@@ -26,45 +44,49 @@ const ImageModal = () => {
     dispatch(productActions.setIsImageModalOpen(false));
   };
 
+  const handleNextImage = () => {
+    dispatch(productActions.nextImage());
+  };
+
+  const handlePreviousImage = () => {
+    dispatch(productActions.previousImage());
+  };
+
   return (
-    <div className="image-modal">
-      <Image src={Close} className="close-modal" onClick={handleCloseModal} />
-      <Image
-        className="selected-product"
-        src={selectedImageUrl}
-        alt="Selected Product"
-      />
-      <div className="inner-control previous">
-        <Image src={Previous} alt="previous" />
-      </div>
-      <div className="inner-control next">
-        <Image src={Next} alt="next" />
-      </div>
-      <div className="smaller-images">
+    <div className="image-modal-overlay">
+      <div className="image-modal" ref={imageModalRef}>
         <Image
-          src={product1}
-          alt="product1"
-          className="smaller-products"
-          onClick={() => handleImageClick(product1)}
+          src={Close}
+          alt="close icon"
+          className="close-modal"
+          onClick={handleCloseModal}
         />
         <Image
-          src={product2}
-          alt="product2"
-          className="smaller-products"
-          onClick={() => handleImageClick(product2)}
+          className="selected-product"
+          src={selectedImageUrl}
+          alt="Selected Product"
+          width={550}
+          height={550}
         />
-        <Image
-          src={product3}
-          alt="product3"
-          className="smaller-products"
-          onClick={() => handleImageClick(product3)}
-        />
-        <Image
-          src={product4}
-          alt="product4"
-          className="smaller-products"
-          onClick={() => handleImageClick(product4)}
-        />
+        <div className="inner-control previous" onClick={handlePreviousImage}>
+          <Image src={Previous} alt="previous" />
+        </div>
+        <div className="inner-control next" onClick={handleNextImage}>
+          <Image src={Next} alt="next" />
+        </div>
+        <div className="smaller-images">
+          {product.thumbnailImages.map((thumb, index) => (
+            <Image
+              key={index}
+              src={thumb}
+              alt={`product${index + 1}`}
+              className="modal-products"
+              width={550}
+              height={88}
+              onClick={() => handleImageClick(product.images[index])}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

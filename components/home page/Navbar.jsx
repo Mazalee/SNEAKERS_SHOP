@@ -15,9 +15,11 @@ const Navbar = () => {
     dispatch(cartActions.toggleCartModal());
   };
   const { isCartModalOpen } = useSelector((state) => state.cart);
+  const { totalQuantity } = useSelector((state) => state.product);
   const cartRef = useRef();
 
   const handleClickOutside = (e) => {
+    console.log("handleClickOutside is triggered");
     if (cartRef.current && !cartRef.current.contains(e.target)) {
       dispatch(cartActions.closeCartModal());
     }
@@ -37,6 +39,9 @@ const Navbar = () => {
         <div className="nav-right">
           <div className="cart-icon-container" onClick={openCart} ref={cartRef}>
             <Image className="cart" src={Cart} alt="cart" />
+            {totalQuantity > 0 && (
+              <span className="cart-item-count">{totalQuantity}</span>
+            )}
             {isCartModalOpen && <CartItem />}
           </div>
           <Image className="avatar" src={Avatar} alt="avatar" />

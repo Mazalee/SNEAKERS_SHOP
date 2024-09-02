@@ -1,5 +1,4 @@
 import React from "react";
-import Product1 from "../../public/images/image-product-1-thumbnail.jpg";
 import Image from "next/image";
 import "../../styles/cartItem.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +29,7 @@ const CartItem = () => {
                 <div className="cart-content-inner">
                   <div className="cart-image">
                     <Image
-                      src={item.imageUrl}
+                      src={item.thumbnailImage}
                       alt={item.name}
                       width={50}
                       height={50}

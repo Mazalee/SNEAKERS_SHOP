@@ -1,10 +1,4 @@
-"use client";
-
 import { createSlice } from "@reduxjs/toolkit";
-import productImages1 from "./../public/images/image-product-1.jpg";
-import productImages2 from "./../public/images/image-product-2.jpg";
-import productImages3 from "./../public/images/image-product-3.jpg";
-import productImages4 from "./../public/images/image-product-4.jpg";
 
 const initialState = {
   selectedProductId: null,
@@ -20,7 +14,12 @@ const initialState = {
       price: 250,
       discount: 50,
       finalPrice: null,
-      images: [productImages1, productImages2, productImages3, productImages4],
+      images: [
+        "/images/image-product-1.jpg",
+        "/images/image-product-2.jpg",
+        "/images/image-product-3.jpg",
+        "/images/image-product-4.jpg",
+      ],
       thumbnailImages: [
         "/images/image-product-1-thumbnail.jpg",
         "/images/image-product-2-thumbnail.jpg",
@@ -81,7 +80,7 @@ export const productSlice = createSlice({
           name: product.name,
           finalPrice: product.finalPrice,
           quantity,
-          imageUrl: product.imageUrl,
+          thumbnailImage: product.thumbnailImages[productId],
         });
       }
 
@@ -93,6 +92,34 @@ export const productSlice = createSlice({
     },
     setIsImageModalOpen(state, action) {
       state.isImageModalOpen = action.payload;
+    },
+    nextImage(state) {
+      const selectedProduct = state.products.find(
+        (product) => (product.id = state.selectedProductId)
+      );
+
+      if (selectedProduct) {
+        const currentIndex = selectedProduct.images.indexOf(
+          state.selectedImageUrl
+        );
+        const nextIndex = (currentIndex + 1) % selectedProduct.images.length;
+        state.selectedImageUrl = selectedProduct.images[nextIndex];
+      }
+    },
+    previousImage(state) {
+      const selectedProduct = state.products.find(
+        (product) => (product.id = state.selectedProductId)
+      );
+
+      if (selectedProduct) {
+        const currentIndex = selectedProduct.images.indexOf(
+          state.selectedImageUrl
+        );
+        const previousIndex =
+          (currentIndex - 1 + selectedProduct.images.length) %
+          selectedProduct.images.length;
+        state.selectedImageUrl = selectedProduct.images[previousIndex];
+      }
     },
   },
 });

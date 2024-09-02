@@ -107,8 +107,109 @@
   color: #d9e1f1;
 }
 
+/*TABLET*/
+@media only screen and (min-width: 768px) {
+  .wrapper {
+    max-width: 445px;
+  }
+  .product {
+    max-width: 445px;
+    margin-inline: auto;
+    display: grid;
+    height: 565px;
+    margin-top: 10px;
+    margin-bottom: 60px;
+  }
+  .product-image {
+    margin-bottom: 250px;
+  }
+  .product1 {
+    width: 445px;
+    height: 445px;
+    border-radius: 15px;
+  }
+  .other-images {
+    display: block;
+    margin-top: 32px;
+  }
+  .other-images-inner {
+    display: grid;
+    gap: 31px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .smaller-products {
+    width: 88px;
+    height: 88px;
+    border-radius: 10px;
+  }
+  .control {
+    display: none;
+  }
+  .product-price {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    width: 445px;
+    margin-top: 20px;
+  }
+
+  .product-inner-price h2 {
+    font-size: 35px;
+  }
+  .price-percentage {
+    width: 60px;
+    height: 35px;
+  }
+  .price-percentage h1 {
+    font-size: 20px;
+  }
+  .product-price h3 {
+    font-size: 20px;
+  }
+  .add-product {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 32px;
+    gap: 16px;
+  }
+  .btn {
+    margin-top: 30px;
+    padding: 18px 76px;
+  }
+  .product-details {
+    margin-top: 70px;
+  }
+  .product-details h3 {
+    font-size: 20px;
+  }
+  .product-details h2 {
+    font-size: 44px;
+    margin-top: 15px;
+  }
+  .product-details p {
+    margin-top: 20px;
+    font-size: 22px;
+  }
+  .add-product {
+    display: grid;
+    grid-template-columns: auto;
+    margin-bottom: 30px;
+  }
+  .product-amount {
+    width: 100%;
+    height: 65px;
+  }
+  .btn {
+    margin-top: 10px;
+    padding: 23px 76px;
+  }
+}
+
 /*DESKTOP*/
 @media only screen and (min-width: 1024px) {
+  .wrapper {
+    max-width: 1110px;
+  }
   .product {
     max-width: 1015px;
     margin-inline: auto;
@@ -146,8 +247,12 @@
     grid-template-columns: auto;
     margin-top: 20px;
   }
+  .product-inner-price {
+    gap: 100px;
+  }
   .product-price h3 {
-    margin-left: -115px;
+    margin-left: -143px;
+    margin-top: -15px;
   }
   .add-product {
     display: grid;
@@ -161,6 +266,7 @@
   }
   .product-amount {
     width: 157px;
+    height: 56px;
   }
   .product-details {
     margin-top: 70px;
@@ -171,5 +277,9 @@
   }
   .product-details p {
     margin-top: 20px;
+    font-size: 16px;
+  }
+  .product-details h3 {
+    font-size: 13px;
   }
 }
